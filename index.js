@@ -10,11 +10,11 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // ✅ Enable CORS properly
-app.use(cors({
-  origin: ['http://localhost:5173'], // add your frontend origin here
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-}));
+// app.use(cors({
+//   origin: ['http://localhost:5173'], // add your frontend origin here
+//   methods: ['GET', 'POST', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type'],
+// }));
 
 app.use(express.json());
 
