@@ -1,9 +1,11 @@
 {
   "name": "ddsa-api",
   "version": "1.0.0",
-  "main": "api/hello.js",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
-    "start": "node api/hello.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +13,10 @@
   "description": "",
   "dependencies": {
     "dotenv": "^17.2.0",
+    "express": "^5.1.0",
     "mongodb": "^6.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
