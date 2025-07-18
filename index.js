@@ -42,18 +42,37 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 //   }
 // });
 
+// import express from "express";
+// import cors from "cors";
+
+// const app = express();
+// const PORT = process.env.PORT || 3000;
+
+// CORS Setup — allow localhost and production domains
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://yourfrontenddomain.com",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "OPTIONS"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-app.use(express.json());
+// Handle preflight requests
+app.options("*", cors()); // <<< This is CRITICAL
 
-// Preflight route
-app.options("/submit", cors());
+app.use(express.json());
 
 app.post("/submit", async (req, res) => {
   try {
@@ -77,6 +96,7 @@ app.post("/submit", async (req, res) => {
   }
 });
 
+// Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on ${PORT}`);
 });
