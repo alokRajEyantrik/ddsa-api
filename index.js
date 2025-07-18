@@ -16,6 +16,8 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 app.use(
   cors({
     origin: "http://localhost:5173", // allow only your frontend (SvelteKit dev)
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true,
   })
 );
 app.use(express.json());
