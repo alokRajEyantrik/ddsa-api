@@ -1,6 +1,7 @@
 // index.js
 import express from "express";
 import { MongoClient } from "mongodb";
+import cors from 'cors';
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,7 +13,9 @@ const client = new MongoClient(process.env.MONGODB_URI, {
   tls: true,
 });
 
+app.use(cors()); 
 app.use(express.json());
+
 
 app.get("/", (req, res) => {
   res.send("API is working");
