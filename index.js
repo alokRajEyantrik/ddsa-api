@@ -9,8 +9,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // const client = new MongoClient(process.env.MONGODB_URI);
 const client = new MongoClient(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   tls: true,
 });
 
