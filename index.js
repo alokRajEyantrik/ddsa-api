@@ -1,7 +1,7 @@
 // index.js
-import express from 'express';
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
+import express from "express";
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -11,23 +11,27 @@ const client = new MongoClient(process.env.MONGODB_URI);
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('API is working');
+app.get("/", (req, res) => {
+  res.send("API is working");
 });
 
-app.post('/submit', async (req, res) => {
+app.post("/submit", async (req, res) => {
   try {
+    console.log("🔥 Incoming POST data:", req.body);
     await client.connect();
-    console.log('✅ MongoDB connected successfully');
+    console.log("✅ MongoDB connected successfully");
 
-    const db = client.db('mydb');
-    const collection = db.collection('submissions');
+    const db = client.db("mydb");
+    const collection = db.collection("submissions");
 
-    const result = await collection.insertOne({ ...req.body, createdAt: new Date() });
+    const result = await collection.insertOne({
+      ...req.body,
+      createdAt: new Date(),
+    });
     res.json({ success: true, insertedId: result.insertedId });
   } catch (err) {
-    console.error('❌ Error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    console.error("❌ Error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   } finally {
     await client.close();
   }
