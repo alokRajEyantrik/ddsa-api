@@ -13,18 +13,47 @@ const client = new MongoClient(process.env.MONGODB_URI, {
   tls: true,
 });
 
+// app.use(cors());
+// app.use(express.json());
+
+// app.get("/", (req, res) => {
+//   res.send("API is working");
+// });
+
+// app.post("/submit", async (req, res) => {
+//   try {
+//     console.log("🔥 Incoming POST data:", req.body);
+//     await client.connect();
+//     console.log("✅ MongoDB connected successfully");
+
+//     const db = client.db("mydb");
+//     const collection = db.collection("submissions");
+
+//     const result = await collection.insertOne({
+//       ...req.body,
+//       createdAt: new Date(),
+//     });
+//     res.json({ success: true, insertedId: result.insertedId });
+//   } catch (err) {
+//     console.error("❌ Error:", err);
+//     res.status(500).json({ success: false, message: "Server error" });
+//   } finally {
+//     await client.close();
+//   }
+// });
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // allow only your frontend (SvelteKit dev)
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true,
   })
 );
+
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API is working");
-});
+// Preflight route
+app.options("/submit", cors());
 
 app.post("/submit", async (req, res) => {
   try {
