@@ -47,5 +47,5 @@ app.post('/submit', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://192.168.1.5:${PORT}`);
 });
