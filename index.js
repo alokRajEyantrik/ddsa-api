@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.options('*', cors());
+// app.options('*', cors());
 
 
 const allowedOrigins = [
