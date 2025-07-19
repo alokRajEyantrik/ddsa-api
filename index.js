@@ -15,11 +15,16 @@ const allowedOrigins = [
   "ionic://localhost",
   "http://localhost:3000",
 ];
-
 app.use((req, res, next) => {
-  console.log('Request Origin:', req.headers.origin);
+  console.log("--- Request Headers ---");
+  console.log(req.headers);
   next();
 });
+
+// app.use((req, res, next) => {
+//   console.log('Request Origin:', req.headers.origin);
+//   next();
+// });
 
 // ✅ Enable CORS properly
 app.use(
@@ -28,7 +33,7 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
