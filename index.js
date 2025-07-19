@@ -16,6 +16,11 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.headers.origin);
+  next();
+});
+
 // ✅ Enable CORS properly
 app.use(
   cors({
