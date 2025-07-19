@@ -9,11 +9,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.options('*', cors());
+
+
 const allowedOrigins = [
   "http://localhost",
   "capacitor://localhost",
   "ionic://localhost",
-  "http://localhost:3000",
+  "http://localhost:8000",
 ];
 app.use((req, res, next) => {
   console.log("--- Request Headers ---");
@@ -27,21 +30,33 @@ app.use((req, res, next) => {
 // });
 
 // ✅ Enable CORS properly
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true,
+//     methods: ["GET", "POST", "OPTIONS"],
+//     allowedHeaders: ["Content-Type"],
+//   })
+// );
 app.use(
   cors({
     origin: (origin, callback) => {
+      // Allow requests with no origin (like from mobile apps)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error('Not allowed by CORS'));
       }
     },
-    credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    credentials: true
   })
 );
-
 app.use(express.json());
 
 const client = new MongoClient(process.env.MONGODB_URI, {
