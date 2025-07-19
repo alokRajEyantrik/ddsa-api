@@ -9,15 +9,24 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+const allowedOrigins = [
+  "http://localhost",
+  "capacitor://localhost",
+  "ionic://localhost",
+  "http://localhost:3000",
+];
+
 // ✅ Enable CORS properly
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://192.168.1.5",
-      "capacitor://localhost",
-      "capacitor://192.168.1.5",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
