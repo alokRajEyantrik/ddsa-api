@@ -14,10 +14,17 @@ const PORT = process.env.PORT || 8000;
 
 const allowedOrigins = [
   "http://localhost",
+  "http://localhost:3000",
+  "http://192.168.1.5:5173",  // 👈 Add this
   "capacitor://localhost",
-  "ionic://localhost",
-  "http://localhost:8000",
+  "ionic://localhost"
 ];
+
+app.use((req, res, next) => {
+  console.log('🟡 Incoming Origin:', req.headers.origin);
+  next();
+});
+
 app.use((req, res, next) => {
   console.log("--- Request Headers ---");
   console.log(req.headers);
@@ -47,16 +54,18 @@ app.use((req, res, next) => {
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like from mobile apps)
+      console.log('🟡 Checking Origin:', origin);
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        console.error('❌ Not allowed by CORS:', origin);
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true
   })
 );
+
 app.use(express.json());
 
 const client = new MongoClient(process.env.MONGODB_URI, {
