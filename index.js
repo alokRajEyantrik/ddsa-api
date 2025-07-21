@@ -12,9 +12,20 @@ const PORT = process.env.PORT || 3000;
 // ✅ Enable CORS properly
 app.use(
   cors({
-    origin: ["http://localhost", "capacitor://localhost", "ionic://localhost"],
+    origin: [
+      "http://localhost",
+      "http://localhost:5173",
+      "capacitor://localhost",
+      "ionic://localhost",
+      "https://ddsa-api-1.onrender.com", // Optional if you're doing frontend SSR
+      "*", // ⚠️ Only for testing - remove in production
+    ],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "OPTIONS"],
   })
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 
