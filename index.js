@@ -9,61 +9,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// app.options('*', cors());
-
-
-const allowedOrigins = [
-  "http://localhost",
-  "http://localhost:3000",
-  "http://localhost:8000",
-  // "http://192.168.1.5:5173",  // 👈 Add this
-  "capacitor://localhost",
-  "ionic://localhost"
-];
-
-app.use((req, res, next) => {
-  console.log('🟡 Incoming Origin:', req.headers.origin);
-  next();
-});
-
-app.use((req, res, next) => {
-  console.log("--- Request Headers ---");
-  console.log(req.headers);
-  next();
-});
-
-// app.use((req, res, next) => {
-//   console.log('Request Origin:', req.headers.origin);
-//   next();
-// });
-
 // ✅ Enable CORS properly
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true,
-//     methods: ["GET", "POST", "OPTIONS"],
-//     allowedHeaders: ["Content-Type"],
-//   })
-// );
 app.use(
   cors({
-    origin: (origin, callback) => {
-      console.log('🟡 Checking Origin:', origin);
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.error('❌ Not allowed by CORS:', origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true
+    origin: ["http://localhost:5173", "capacitor://192.168.1.5"], // add your frontend origin here
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
   })
 );
 
@@ -98,5 +49,5 @@ app.post("/submit", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://192.168.1.5:${PORT}`);
 });
