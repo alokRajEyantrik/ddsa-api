@@ -16,7 +16,7 @@ const allowedOrigins = [
   "http://localhost",
   "http://localhost:3000",
   "http://localhost:8000",
-  "http://192.168.1.5:5173",  // 👈 Add this
+  // "http://192.168.1.5:5173",  // 👈 Add this
   "capacitor://localhost",
   "ionic://localhost"
 ];
