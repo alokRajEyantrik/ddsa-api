@@ -12,9 +12,7 @@ const PORT = process.env.PORT || 3000;
 // ✅ Enable CORS properly
 app.use(
   cors({
-    origin: ["http://localhost:5173", "capacitor://192.168.1.5"], // add your frontend origin here
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    origin: ["http://localhost", "capacitor://localhost", "ionic://localhost"],
   })
 );
 
