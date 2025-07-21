@@ -7,7 +7,7 @@ import { MongoClient } from "mongodb";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 // app.options('*', cors());
 
@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 8000;
 const allowedOrigins = [
   "http://localhost",
   "http://localhost:3000",
+  "http://localhost:8000",
   "http://192.168.1.5:5173",  // 👈 Add this
   "capacitor://localhost",
   "ionic://localhost"
