@@ -1,4 +1,3 @@
-// index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -9,51 +8,48 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Enable CORS properly
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost",
-//       "http://localhost:5173",
-//       "capacitor://localhost",
-//       "ionic://localhost",
-//       "https://ddsa-api-1.onrender.com", // Optional if you're doing frontend SSR
-//     ],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     methods: ["GET", "POST", "OPTIONS"],
-//   })
-// );
+// ✅ Define allowed origins
+const allowedOrigins = [
+  "http://localhost",
+  "http://localhost:5173",
+  "https://localhost",
+  "https://localhost:5173",
+  "capacitor://localhost",
+  "ionic://localhost",
+  "https://ddsa-api-1.onrender.com"
+];
 
+// ✅ CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      const allowedOrigins = [
-        "http://localhost",
-        "http://localhost:5173",
-        "capacitor://localhost",
-        "ionic://localhost",
-        "https://ddsa-api-1.onrender.com",
-      ];
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // allow request
+      // Allow requests with no origin (like Postman or CURL)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        return callback(new Error("⛔ Not allowed by CORS: " + origin));
       }
     },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // Optional: only if you're using session/auth
+    credentials: true  // only if you're managing auth/session tokens
   })
 );
 
-// app.options("*", cors());
+// 🧪 Optional: handle preflight OPTIONS requests manually (if needed)
+app.options("/*all", cors()); // ✅ Valid + avoids 'path-to-regexp' crash
 
+
+// ✅ Body parser
 app.use(express.json());
 
+// ✅ MongoDB
 const client = new MongoClient(process.env.MONGODB_URI, {
   tls: true,
 });
 
+// ✅ Routes
 app.get("/", (req, res) => {
   res.send("API is working");
 });
@@ -78,6 +74,7 @@ app.post("/submit", async (req, res) => {
   }
 });
 
+// ✅ Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
