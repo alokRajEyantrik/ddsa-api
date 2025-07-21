@@ -18,7 +18,6 @@ app.use(
       "capacitor://localhost",
       "ionic://localhost",
       "https://ddsa-api-1.onrender.com", // Optional if you're doing frontend SSR
-      "*", // ⚠️ Only for testing - remove in production
     ],
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "OPTIONS"],
