@@ -10,17 +10,39 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ✅ Enable CORS properly
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost",
+//       "http://localhost:5173",
+//       "capacitor://localhost",
+//       "ionic://localhost",
+//       "https://ddsa-api-1.onrender.com", // Optional if you're doing frontend SSR
+//     ],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     methods: ["GET", "POST", "OPTIONS"],
+//   })
+// );
+
 app.use(
   cors({
-    origin: [
-      "http://localhost",
-      "http://localhost:5173",
-      "capacitor://localhost",
-      "ionic://localhost",
-      "https://ddsa-api-1.onrender.com", // Optional if you're doing frontend SSR
-    ],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "http://localhost",
+        "http://localhost:5173",
+        "capacitor://localhost",
+        "ionic://localhost",
+        "https://ddsa-api-1.onrender.com",
+      ];
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true); // allow request
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Optional: only if you're using session/auth
   })
 );
 
